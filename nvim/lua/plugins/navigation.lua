@@ -28,6 +28,8 @@ return {
       { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
       { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
       { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help tags" },
+      { "<leader>fn", function() require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find nvim config files" },
+      { "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "View keymaps" },
     },
     opts = {
       defaults = {
