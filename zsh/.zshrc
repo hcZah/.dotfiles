@@ -72,3 +72,7 @@ zle -N zle-line-finish
 precmd() {
     set_prompt
 }
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
