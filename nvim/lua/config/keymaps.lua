@@ -1,5 +1,8 @@
 local map = vim.keymap.set
 
+-- Open a 15-line terminal pane at the bottom (Super+t)
+map("n", "<leader>t", "<cmd>botright 15split | terminal<CR>", { desc = "Terminal pane at bottom" })
+
 -- Clear search highlights
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 

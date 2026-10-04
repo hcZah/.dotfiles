@@ -36,16 +36,20 @@ return {
     },
   },
 
-  -- Tree-sitter for syntax highlighting & navigation
+  -- Tree-sitter for syntax highlighting
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = { "lua", "vim", "vimdoc", "bash", "markdown" },
-        auto_install = true,
-        highlight = { enable = true },
-        indent = { enable = true },
+      require("nvim-treesitter").setup()
+      require("nvim-treesitter").install({ "lua", "vim", "vimdoc", "bash", "markdown" })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "lua", "vim", "help", "bash", "sh", "markdown" },
+        callback = function()
+          vim.treesitter.start()
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
       })
     end,
   },

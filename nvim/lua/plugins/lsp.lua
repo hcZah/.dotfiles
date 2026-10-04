@@ -20,7 +20,6 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {"williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp"},
     config = function()
-      local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       local on_attach = function(_, bufnr)
@@ -37,16 +36,18 @@ return {
         map("n", "<leader>d", vim.diagnostic.open_float, "Show Diagnostics")
       end
 
-      lspconfig.lua_ls.setup({
+      vim.lsp.config("lua_ls", {
         capabilities = capabilities,
         on_attach = on_attach,
         settings = {Lua = {diagnostics = {globals = {"vim"}}}},
       })
 
-      lspconfig.bashls.setup({
+      vim.lsp.config("bashls", {
         capabilities = capabilities,
         on_attach = on_attach,
       })
+
+      vim.lsp.enable({"lua_ls", "bashls"})
     end,
   },
   -- Autocompletion engine

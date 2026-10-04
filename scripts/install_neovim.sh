@@ -9,4 +9,6 @@ fi
 
 echo "==> Installing neovim"
 sudo apt-get update -qq
+sudo apt-mark unhold neovim 2>/dev/null || true
 sudo apt-get install -y neovim
+sudo apt-mark hold neovim || true

@@ -1,8 +1,6 @@
 # ==========================================
 # 1. Environment & PATH (Preserved from Bash)
 # ==========================================
-export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
-
 # Node Version Manager (NVM)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

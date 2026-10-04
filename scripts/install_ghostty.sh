@@ -9,8 +9,10 @@ fi
 
 echo "==> Installing ghostty"
 sudo apt-get update -qq
+sudo apt-mark unhold ghostty 2>/dev/null || true
 sudo apt-get install -y ghostty || {
     echo "!! ghostty not available via apt on this system."
     echo "!! Install it manually: https://ghostty.org/docs/install"
     exit 1
 }
+sudo apt-mark hold ghostty || true
