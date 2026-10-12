@@ -8,6 +8,9 @@ export NVM_DIR="$HOME/.nvm"
 # Input filter
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# .NET global tools
+export PATH="$HOME/.dotnet/tools:$PATH"
+
 # ==========================================
 # 2. History Settings
 # ==========================================
