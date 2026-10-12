@@ -68,11 +68,12 @@ fi
 
 # eza — icons are auto-detected from the terminal's font/colour support
 if command -v eza >/dev/null 2>&1; then
-  alias ls='eza --all --icons=auto --group-directories-first'
-  alias ll='eza --long --all --icons=auto --group-directories-first'
+  # `ls`/`l` hide dotfiles like plain ls; `la`/`ll`/`lt` show them.
+  alias ls='eza --icons=auto --group-directories-first'
+  alias l='eza --icons=auto --group-directories-first'
   alias la='eza --all --icons=auto --group-directories-first'
+  alias ll='eza --long --all --icons=auto --group-directories-first'
   alias lt='eza --tree --level=2 --all --icons=auto --group-directories-first'
-  alias l='eza --all --icons=auto --group-directories-first'
 fi
 
 # fd — Debian/Ubuntu ships it as `fdfind`. Note: fd renders no icons itself,
