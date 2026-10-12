@@ -5,17 +5,42 @@
 # Sourcing nvm.sh eagerly costs ~1.2s per shell (script parse + implicit `nvm use`).
 export NVM_DIR="$HOME/.nvm"
 
-# Node binaries are resolved from nvm's default version without loading nvm.sh.
-if [ -r "$NVM_DIR/alias/default" ]; then
-  _nvm_default="$(<"$NVM_DIR/alias/default")"
-  case "$_nvm_default" in
-    lts/*|node/*) _nvm_default="${_nvm_default#*/}" ;;
-  esac
-  if [ -z "${_nvm_default##*[!0-9.]*}" ] && [ -x "$NVM_DIR/versions/node/v$_nvm_default/bin/node" ]; then
-    export PATH="$NVM_DIR/versions/node/v$_nvm_default/bin:$PATH"
+# Resolve the default node version without loading nvm.sh.
+# `nvm alias default` is often a symbolic alias such as `lts/*`, which is NOT a
+# version number -- resolve those against nvm's alias/ files, then fall back
+# to the newest installed version.
+_nvm_resolve() {
+  local alias="${1:-$(<"$NVM_DIR/alias/default")}" target resolved
+
+  # Follow the alias chain: `lts/*` -> `lts/krypton` -> `v24.21.0`.
+  # nvm stores these as plain text files under $NVM_DIR/alias/.
+  # NOTE: always print an ABSOLUTE path to the version's bin/ dir.
+  local i
+  for (( i = 0; i < 8; i++ )); do
+    [[ "$alias" == v[0-9]* ]] && {
+      [ -x "$NVM_DIR/versions/node/$alias/bin/node" ] &&
+        { print -r -- "$NVM_DIR/versions/node/$alias/bin"; return 0 }
+      break
+    }
+    [ -r "$NVM_DIR/alias/$alias" ] || break
+    target="$(<"$NVM_DIR/alias/$alias")"
+    [ -z "$target" ] && break
+    alias="$target"
+  done
+
+  # Alias we couldn't follow: newest installed version wins (sort -V).
+  local newest="${${(f)"$(print -l $NVM_DIR/versions/node/v*(N/) | sort -V | tail -n1)"}%%/*}"
+  [ -n "$newest" ] && print -r -- "$NVM_DIR/versions/node/$newest/bin"
+}
+
+if [ -d "$NVM_DIR/versions/node" ]; then
+  _nvm_bin="$(_nvm_resolve)"
+  if [ -n "$_nvm_bin" ] && [ -x "$_nvm_bin/node" ]; then
+    export PATH="$_nvm_bin:$PATH"
   fi
-  unset _nvm_default
+  unset _nvm_bin
 fi
+unset -f _nvm_resolve
 
 nvm() {
   unset -f nvm
