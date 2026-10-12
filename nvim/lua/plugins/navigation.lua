@@ -24,12 +24,12 @@ return {
     branch = "0.1.x",
     dependencies = { "nvim-lua/plenary.nvim" },
     keys = {
-      { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-      { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
-      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
-      { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help tags" },
-      { "<leader>fn", function() require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find nvim config files" },
-      { "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "View keymaps" },
+      { "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "Find files" },
+      { "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
+      { "<leader>sb", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
+      { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help tags" },
+      { "<leader>sn", function() require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find nvim config files" },
+      { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "View keymaps" },
     },
     opts = {
       defaults = {
@@ -41,17 +41,13 @@ return {
   -- Tree-sitter for syntax highlighting
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "main",
+    branch = "master",
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter").setup()
-      require("nvim-treesitter").install({ "lua", "vim", "vimdoc", "bash", "markdown" })
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "lua", "vim", "help", "bash", "sh", "markdown" },
-        callback = function()
-          vim.treesitter.start()
-          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-        end,
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = { "lua", "vim", "vimdoc", "bash", "markdown", "markdown_inline" },
+        highlight = { enable = true },
+        indent = { enable = true },
       })
     end,
   },

@@ -1,9 +1,32 @@
+local get_capabilities = function()
+  return require("cmp_nvim_lsp").default_capabilities()
+end
+
+local on_attach = function(_, bufnr)
+  local map = function(mode, lhs, rhs, desc)
+    vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+  end
+  map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
+  map("n", "gr", vim.lsp.buf.references, "Goto References")
+  map("n", "K", vim.lsp.buf.hover, "Hover Docs")
+  map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
+  map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
+  map("n", "[d", vim.diagnostic.goto_prev, "Prev Diagnostic")
+  map("n", "]d", vim.diagnostic.goto_next, "Next Diagnostic")
+  map("n", "<leader>d", vim.diagnostic.open_float, "Show Diagnostics")
+end
+
 return {
   -- Mason package manager for LSP servers and formatters
   {
     "williamboman/mason.nvim",
     config = function()
-      require("mason").setup()
+      require("mason").setup({
+        registries = {
+          "github:Crashdummyy/mason-registry", -- Roslyn server
+          "github:mason-org/mason-registry", -- default registry
+        },
+      })
     end,
   },
   {
@@ -20,34 +43,48 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {"williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp"},
     config = function()
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-      local on_attach = function(_, bufnr)
-        local map = function(mode, lhs, rhs, desc)
-          vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
-        end
-        map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
-        map("n", "gr", vim.lsp.buf.references, "Goto References")
-        map("n", "K", vim.lsp.buf.hover, "Hover Docs")
-        map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
-        map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
-        map("n", "[d", vim.diagnostic.goto_prev, "Prev Diagnostic")
-        map("n", "]d", vim.diagnostic.goto_next, "Next Diagnostic")
-        map("n", "<leader>d", vim.diagnostic.open_float, "Show Diagnostics")
-      end
+      vim.lsp.config("roslyn_ls", {
+        capabilities = get_capabilities(),
+        on_attach = on_attach,
+      })
 
       vim.lsp.config("lua_ls", {
-        capabilities = capabilities,
+        capabilities = get_capabilities(),
         on_attach = on_attach,
         settings = {Lua = {diagnostics = {globals = {"vim"}}}},
       })
 
       vim.lsp.config("bashls", {
-        capabilities = capabilities,
+        capabilities = get_capabilities(),
         on_attach = on_attach,
       })
 
-      vim.lsp.enable({"lua_ls", "bashls"})
+      vim.lsp.config("angularls", {
+        capabilities = get_capabilities(),
+        on_attach = on_attach,
+      })
+
+      vim.lsp.config("cssls", {
+        capabilities = get_capabilities(),
+        on_attach = on_attach,
+      })
+
+      vim.lsp.config("html", {
+        capabilities = get_capabilities(),
+        on_attach = on_attach,
+      })
+
+      vim.lsp.config("pyright", {
+        capabilities = get_capabilities(),
+        on_attach = on_attach,
+      })
+
+      vim.lsp.config("vtsls", {
+        capabilities = get_capabilities(),
+        on_attach = on_attach,
+      })
+
+      vim.lsp.enable({"lua_ls", "bashls", "angularls", "cssls", "html", "pyright", "vtsls"})
     end,
   },
   -- Autocompletion engine
@@ -72,16 +109,7 @@ return {
           ["<C-d>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
-          ["<CR>"] = cmp.mapping.confirm({select = true}),
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            else
-              fallback()
-            end
-          end, {"i", "s"}),
+          ["<C-y>"] = cmp.mapping.confirm({ select = true }),
         }),
         sources = cmp.config.sources({{name = "nvim_lsp"}, {name = "luasnip"}, {name = "path"}, {name = "buffer"}}),
       })
