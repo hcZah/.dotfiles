@@ -84,7 +84,27 @@ return {
         on_attach = on_attach,
       })
 
-      vim.lsp.enable({"lua_ls", "bashls", "angularls", "cssls", "html", "pyright", "vtsls"})
+      vim.lsp.config("clangd", {
+        capabilities = get_capabilities(),
+        on_attach = on_attach,
+      })
+
+      vim.lsp.config("neocmake", {
+        capabilities = get_capabilities(),
+        on_attach = on_attach,
+      })
+
+      vim.lsp.config("sass_ls", {
+        capabilities = get_capabilities(),
+        on_attach = on_attach,
+      })
+
+      vim.lsp.config("tailwindcss", {
+        capabilities = get_capabilities(),
+        on_attach = on_attach,
+      })
+
+      vim.lsp.enable({"lua_ls", "bashls", "angularls", "cssls", "html", "pyright", "vtsls", "clangd", "neocmake", "sass_ls", "tailwindcss"})
     end,
   },
   -- Autocompletion engine
