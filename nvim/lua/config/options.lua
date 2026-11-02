@@ -8,6 +8,10 @@ opt.number = true
 opt.relativenumber = true
 opt.colorcolumn = "100"
 
+-- Keep at least 7 lines between the cursor and the screen edges
+opt.scrolloff = 7
+opt.sidescrolloff = 7
+
 -- Tabs & Indents
 opt.tabstop = 4
 opt.shiftwidth = 4
