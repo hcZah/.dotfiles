@@ -25,6 +25,7 @@ link "$DOTFILES_DIR/zsh/.zshrc"  "$HOME/.zshrc"
 link "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv"
 link "$DOTFILES_DIR/tmux"        "$HOME/.config/tmux"
 link "$DOTFILES_DIR/nvim"        "$HOME/.config/nvim"
+link "$DOTFILES_DIR/nvim/.clang-format" "$HOME/.clang-format"
 link "$DOTFILES_DIR/ghostty"     "$HOME/.config/ghostty"
 link "$DOTFILES_DIR/environment.d" "$HOME/.config/environment.d"
 
