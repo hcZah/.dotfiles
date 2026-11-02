@@ -1,0 +1,16 @@
+CompileFlags:
+  Add:
+    - "-std=c++20"
+    - "-Wall"            
+    - "-Wextra"          
+    - "-Wpedantic"       
+  
+  # Treats all your project files as C++ code, avoiding issues with 
+  # extensionless headers or generic source definitions
+  Compiler: g++
+
+Index:
+  Background: Build      # Enable project-wide indexing for code jumps
+
+Diagnostics:
+  UnusedIncludes: Strict 
