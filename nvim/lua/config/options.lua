@@ -6,7 +6,7 @@ opt.cursorline = true
 opt.signcolumn = "yes"
 opt.number = true
 opt.relativenumber = true
-opt.colorcolumn = "80"
+opt.colorcolumn = "100"
 
 -- Tabs & Indents
 opt.tabstop = 4
