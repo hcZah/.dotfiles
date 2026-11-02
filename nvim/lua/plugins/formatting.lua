@@ -8,6 +8,8 @@ return {
 				bash = { "shfmt" },
 				sh = { "shfmt" },
 				cs = { "csharpier" },
+				c = { "clang-format" },
+				cpp = { "clang-format" },
 			},
 			format_on_save = { timeout_ms = 500, lsp_fallback = true },
 		})
